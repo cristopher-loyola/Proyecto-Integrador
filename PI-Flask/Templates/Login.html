@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <title>Inicio de sesión</title>
+  <link rel="stylesheet" href="/PI-Flask/statics/CSS/all.css">
+  <link rel="stylesheet" href="/PI-Flask/statics/CSS/w3.css">
+  <link rel="stylesheet" href="{{url_for('static', filename ='CSS/all.css')}}">
+</head>
+<body>
+  <div id="login-container" class="w3-display-middle">
+    <h1>Inicio de sesión</h1>
+    <div class="inner-container">
+      <label for="mail">Correo</label><br>
+      <input type="text" class="login-input" id="mail">
+    </div>
+    <div class="inner-container">
+      <label for="password">Contraseña</label><br>
+      <input type="password" class="login-input" id="password">
+    </div>
+    <button onclick="login()" class="login-input w3-button w3-round-large" id="login-button">Iniciar sesión</button><br>
+    <a href="/signup">Registro de nuevos usuarios</a>
+  </div>
+
+  <script src="/PI-Flask/statics/JS/crypto-js.min.js"></script>
+  <script>
+    class SinglyList {
+      constructor() {
+        this.head = JSON.parse(localStorage.getItem('accesskeys'));
+        this.pointer = null;
+      }
+      
+      login(mail, password) {
+        if (this.head) {
+          this.pointer = this.head;
+          let pointer = 0;
+          if (this.pointer.mail == mail && this.pointer.password == password) {
+            localStorage.setItem('user-session', pointer);
+            location.replace("/dashboard");
+          }
+          while (this.pointer.next) {
+            if (this.pointer.mail == mail && this.pointer.password == password) {
+              localStorage.setItem('user-session', pointer);
+              location.replace("/dashboard");
+            }
+            this.pointer = this.pointer.next;
+            pointer++;
+          }
+        }
+      }
+    }
+
+    const list = new SinglyList();
+
+    function login() {
+      list.login(document.getElementById("mail").value, CryptoJS.SHA256(document.getElementById("password").value).toString(CryptoJS.enc.Hex));
+    }
+  </script>
+</body>
+</html>

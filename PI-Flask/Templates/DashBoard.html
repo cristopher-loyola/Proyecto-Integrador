@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/PI-Flask/statics/CSS/all.css">
+    <link rel="stylesheet" href="/PI-Flask/statics/CSS/w3.css">
+  </head>
+  <body>
+    <div id="bar">
+      <ul>
+        <!-- rutas app python -->
+        <li><a href="/dashboard"><img src="/PI-Flask/statics/IMG/Logo.png" id="bar-logo"></a></li>
+        <li><a href="/pretest" target="iframe" class="links">Tomar test</a></li>
+        <li><a href="/datoscuriosos" target="iframe" class="links">Datos curiosos</a></li>
+        <li id="user" style="float: right;"></li>
+      </ul>
+    </div>
+    <!-- rutas python -->
+    <iframe src="/reporte" frameborder="0" name="iframe" id="iframe"></iframe>
+  </body>
+  <script>
+    class SinglyList{
+      constructor(head){
+        this.head=head;
+        this.pointer=null;
+      }
+      getUserName(position){
+        this.pointer=this.head;
+        if(position>0){
+          for(let i=0;i<=position;i++){
+            this.pointer=this.pointer.next;
+          }
+        }
+        return `${this.pointer.name} ${this.pointer.lastname}`;
+      }
+    }
+    const list=new SinglyList(JSON.parse(localStorage.getItem('accesskeys')));
+    var position=parseInt(localStorage.getItem("user-session"))
+    if(position==null){
+      location.replace("login.html");
+    }else{
+      document.getElementById("user").innerHTML=list.getUserName(position);
+    }
+  </script>
+</html>
